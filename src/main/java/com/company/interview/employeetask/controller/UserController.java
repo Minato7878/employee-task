@@ -50,12 +50,6 @@ public class UserController {
         return new ResponseEntity<>(userServiceImpl.findByLogin(login), HttpStatus.OK);
     }
 
-    @GetMapping("/exists/{login}")
-    public ResponseEntity<Boolean> loginExists(@PathVariable String login) {
-        log.debug(LOG_MESSAGE_WITH_USER_LOGIN, "checkLoginExists", login);
-        return new ResponseEntity<>(userServiceImpl.loginExists(login), HttpStatus.OK);
-    }
-
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto) {
         log.debug(LOG_MESSAGE, "createUser");
