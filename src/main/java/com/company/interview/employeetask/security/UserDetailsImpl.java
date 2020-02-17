@@ -33,11 +33,11 @@ public class UserDetailsImpl implements UserDetails {
         switch (role) {
             case ADMIN:
                 authorities.add(new SimpleGrantedAuthority(
-                        RoleConstant.ROLE_ADMIN)
+                        Role.ADMIN.toString())
                 );
             case USER:
                 authorities.add(new SimpleGrantedAuthority(
-                        RoleConstant.ROLE_USER)
+                        Role.USER.toString())
                 );
         }
 

@@ -5,7 +5,6 @@ import com.company.interview.employeetask.dto.SignUpFormDto;
 import com.company.interview.employeetask.dto.UserDto;
 import com.company.interview.employeetask.mapper.SignInFormMapper;
 import com.company.interview.employeetask.mapper.SignUpFormMapper;
-import com.company.interview.employeetask.security.AuthenticationConstant;
 import com.company.interview.employeetask.service.serviceImpl.AuthenticationServiceImpl;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -30,6 +29,8 @@ import javax.validation.Valid;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationController {
 
+    private static final String AUTHENTICATION_TOKEN_HEADER = "Authentication";
+
     @Value("${app.cookieExpirationInS}")
     int cookieExpiration;
 
@@ -53,8 +54,7 @@ public class AuthenticationController {
         UserDto user = signInFormMapper.toEntity(signInFormDTO);
         String token = authenticationService.login(user);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(AuthenticationConstant
-                .AUTHENTICATION_TOKEN_HEADER, token);
+        responseHeaders.set(AUTHENTICATION_TOKEN_HEADER, token);
         response.addCookie(createCookie(token));
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -69,8 +69,7 @@ public class AuthenticationController {
         UserDto user = signUpFormMapper.toEntity(signUpFormDTO);
         String token = authenticationService.register(user);
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set(AuthenticationConstant
-                .AUTHENTICATION_TOKEN_HEADER, token);
+        responseHeaders.set(AUTHENTICATION_TOKEN_HEADER, token);
         response.addCookie(createCookie(token));
         return ResponseEntity.ok()
                 .headers(responseHeaders)
@@ -78,8 +77,7 @@ public class AuthenticationController {
     }
 
     private Cookie createCookie(String token) {
-        final Cookie cookie = new Cookie(AuthenticationConstant
-                .AUTHENTICATION_TOKEN_HEADER, token);
+        final Cookie cookie = new Cookie(AUTHENTICATION_TOKEN_HEADER, token);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(cookieExpiration);
         return cookie;
