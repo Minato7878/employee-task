@@ -1,4 +1,4 @@
-# interview employeeCRM-task
+# (InterviewTask) Employee CRM Project
 # How to run project :
 1) Import as maven project
 2) Import all dependencies
