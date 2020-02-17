@@ -1,7 +1,10 @@
-# interview employeeCRM-task
+# (InterviewTask) Employee CRM Project
 # How to run project :
 1) Import as maven project
 2) Import all dependencies
-3) Check database connection url in application properties
-4) Run 'mvn clean compile' in terminal
+3) Setup database connection
+- Create MySQL Connection and Database according to url in `application.properties`
+  or configure url according to your existing connection and database.
+- Restore database from dump script `backup.sql`.
+4) Run `mvn clean compile` in terminal
 5) Run project as SpringBootApplication
