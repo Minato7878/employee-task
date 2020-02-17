@@ -8,7 +8,6 @@ import com.company.interview.employeetask.mapper.SignUpFormMapper;
 import com.company.interview.employeetask.security.AuthenticationConstant;
 import com.company.interview.employeetask.service.serviceImpl.AuthenticationServiceImpl;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import javax.validation.Valid;
 @Slf4j
 @Validated
 @RestController
-@AllArgsConstructor
 @RequestMapping("/authentication")
 @CrossOrigin("http://localhost:4200")
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -51,7 +49,7 @@ public class AuthenticationController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(HttpServletResponse response,
-                                              @Valid @RequestBody SignInFormDto signInFormDTO) {
+                                              @RequestBody @Valid SignInFormDto signInFormDTO) {
         UserDto user = signInFormMapper.toEntity(signInFormDTO);
         String token = authenticationService.login(user);
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -65,7 +63,7 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(HttpServletResponse response,
-                                          @Valid @RequestBody SignUpFormDto signUpFormDTO)
+                                          @RequestBody @Valid SignUpFormDto signUpFormDTO)
             throws AuthenticationException {
 
         UserDto user = signUpFormMapper.toEntity(signUpFormDTO);

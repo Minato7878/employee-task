@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -31,7 +32,7 @@ public class UserController {
 
     final UserServiceImpl userServiceImpl;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<UserDto>> getAll() {
         log.debug(LOG_MESSAGE, "getAllUsers");
         return new ResponseEntity<>(userServiceImpl.getAllUsers(), HttpStatus.OK);
@@ -43,32 +44,32 @@ public class UserController {
         return new ResponseEntity<>(userServiceImpl.getUser(userId), HttpStatus.OK);
     }
 
-    @GetMapping("/login/{login}")
+    @GetMapping("/{login}")
     public ResponseEntity<UserDto> getByLogin(@PathVariable String login) {
         log.debug(LOG_MESSAGE_WITH_USER_LOGIN, "getUserByLogin", login);
         return new ResponseEntity<>(userServiceImpl.findByLogin(login), HttpStatus.OK);
     }
 
-    @GetMapping("/exists/login/{login}")
+    @GetMapping("/exists/{login}")
     public ResponseEntity<Boolean> loginExists(@PathVariable String login) {
         log.debug(LOG_MESSAGE_WITH_USER_LOGIN, "checkLoginExists", login);
         return new ResponseEntity<>(userServiceImpl.loginExists(login), HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    @PostMapping
+    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserDto userDto) {
         log.debug(LOG_MESSAGE, "createUser");
         return new ResponseEntity<>(userServiceImpl.createUser(userDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto,
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@RequestBody @Valid UserDto userDto,
                                               @RequestParam @ValidId Long userId) {
         log.debug(LOG_MESSAGE_WITH_USER_ID, "updateUser", userId);
         return new ResponseEntity<>(userServiceImpl.updateUser(userDto, userId), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/delete/{userId}")
+    @DeleteMapping("/{userId}")
     public void deleteById(@PathVariable @ValidId Long userId) {
         log.debug(LOG_MESSAGE_WITH_USER_ID, "deleteUserById", userId);
         userServiceImpl.deleteById(userId);

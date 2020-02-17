@@ -15,13 +15,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
 @Validated
 @RestController
 @AllArgsConstructor
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 @CrossOrigin("http://localhost:4200")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmployeeController {
@@ -31,13 +32,13 @@ public class EmployeeController {
 
     final EmployeeService employeeService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
         log.debug(LOG_MESSAGE, "getAllEmployees");
         return new ResponseEntity<>((employeeService.getAllEmployees()), HttpStatus.OK);
     }
 
-    @GetMapping("/all/view")
+    @GetMapping("/view")
     public ResponseEntity<List<EmployeeViewDto>> getAllEmployeesView(@RequestParam String filter,
                                                                      @RequestParam String sortDirection,
                                                                      @PageableDefault(size = 5) Pageable pageable) {
@@ -45,7 +46,7 @@ public class EmployeeController {
         return new ResponseEntity<>((employeeService.getAllEmployeesView(filter, sortDirection, pageable)), HttpStatus.OK);
     }
 
-    @GetMapping("/all/count")
+    @GetMapping("/count")
     public ResponseEntity<Integer> getAllEmployeesCount() {
         log.debug(LOG_MESSAGE, "getAllEmployeesCount");
         return new ResponseEntity<>((employeeService.getAllEmployeesCount()), HttpStatus.OK);
@@ -57,20 +58,20 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeService.getEmployee(employeeId), HttpStatus.OK);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto) {
+    @PostMapping
+    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
         log.debug(LOG_MESSAGE, "createEmployee");
         return new ResponseEntity<>(employeeService.createEmployee(employeeDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<EmployeeDto> updateEmployee(@RequestBody EmployeeDto employeeDto,
+    @PutMapping
+    public ResponseEntity<EmployeeDto> updateEmployee(@RequestBody @Valid EmployeeDto employeeDto,
                                                       @RequestParam @ValidId Long employeeId) {
         log.debug(LOG_MESSAGE_WITH_EMPLOYEE_ID, "updateEmployee", employeeId);
         return new ResponseEntity<>(employeeService.updateEmployee(employeeDto, employeeId), HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/delete/{employeeId}")
+    @DeleteMapping("/{employeeId}")
     public void deleteEmployeeById(@PathVariable @ValidId Long employeeId) {
         log.debug(LOG_MESSAGE_WITH_EMPLOYEE_ID, "deleteEmployee", employeeId);
         employeeService.deleteEmployee(employeeId);
