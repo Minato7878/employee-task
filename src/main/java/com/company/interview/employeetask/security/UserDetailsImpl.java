@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserDetailsImpl implements UserDetails {
+
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    private static final String ROLE_USER = "ROLE_USER";
+
     private Long id;
 
     private String login;
@@ -33,11 +37,11 @@ public class UserDetailsImpl implements UserDetails {
         switch (role) {
             case ADMIN:
                 authorities.add(new SimpleGrantedAuthority(
-                        Role.ADMIN.toString())
+                        ROLE_ADMIN)
                 );
             case USER:
                 authorities.add(new SimpleGrantedAuthority(
-                        Role.USER.toString())
+                        ROLE_USER)
                 );
         }
 
